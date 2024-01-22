@@ -1,6 +1,11 @@
 import { MongoClient, ServerApiVersion } from "mongodb";
 import express from "express";
 import dotenv from "dotenv";
+// import {
+//   createUserDocument,
+//   findAllDocumentsFromCollection,
+//   findUserById,
+// } from "./db";
 dotenv.config();
 
 const app = express();
@@ -26,6 +31,19 @@ async function main() {
     console.log(
       "Pinged your deployment. You successfully connected to MongoDB!"
     );
+    const db = await mongoClient.db("audio-storage");
+
+    const usersCollection = db.collection("users");
+
+    // await createUserDocument(usersCollection, {
+    //   username: "Demi Myrich",
+    //   password: "ECMA Script 2024",
+    //   token: "Cookie123"
+    // });
+
+    // console.log(await findUserById(usersCollection, "65aed5980bb2517ed5fddb48"));
+
+    // console.log(await findAllDocumentsFromCollection(usersCollection));
 
     app.get("/", (req, res) => {
       res.send("Hello World!");
