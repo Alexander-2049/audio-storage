@@ -1,0 +1,15 @@
+{
+  "compilerOptions": {
+    "target": "es6", // Specify the ECMAScript target version
+    "module": "commonjs",
+    "lib": ["es2015", "es2016", "es2017", "es2018", "es2019", "es2020", "dom"], // Include the necessary libraries
+    "rootDir": "src",
+    "outDir": "./dist", // Specify the output directory for transpiled files
+    "strict": true, // Enable strict type-checking options
+    "esModuleInterop": true, // Enable interoperability between CommonJS and ES modules
+    "forceConsistentCasingInFileNames": true // Enforce consistent casing in file names
+  },
+  "include": ["src/**/*.ts"], // Specify the files to include in the compilation
+  "exclude": ["node_modules"], // Specify the files to exclude from the compilation
+  "typeRoots": ["node_modules/@types"]
+}
