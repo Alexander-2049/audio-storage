@@ -1,9 +1,9 @@
 import { Router } from "express";
 import User from "../../../models/User";
 
-const usersRouter = Router();
+const usersListRouter = Router();
 
-usersRouter.get("/", async (req, res) => {
+usersListRouter.get("/", async (req, res) => {
   try {
     const users = await User.collection.find({}).toArray();
     res.status(200).json(users);
@@ -18,4 +18,4 @@ usersRouter.get("/", async (req, res) => {
   }
 });
 
-export default usersRouter;
+export default usersListRouter;
