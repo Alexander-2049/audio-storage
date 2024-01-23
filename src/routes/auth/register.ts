@@ -11,7 +11,9 @@ registerRouter.post("/", async (req, res) => {
     const saltRounds = 10;
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
-    const user = new User({ username, password: hashedPassword });
+    const ip = req.socket.remoteAddress;
+
+    const user = new User({ username, password: hashedPassword, ip });
     await user.save();
     res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
