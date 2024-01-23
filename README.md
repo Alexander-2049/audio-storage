@@ -1,4 +1,4 @@
-"Ready to work" build to work with TypeScript in pair with WebPack.
+Node version: v20.9.0
 
 First of all - install packages:
 ```
