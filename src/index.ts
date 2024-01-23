@@ -24,6 +24,7 @@ const mongoClient = new MongoClient(DB_URI, {
 
 async function main() {
   try {
+    console.log("Trying to connect to MongoDB Database...")
     // Connect the client to the server	(optional starting in v4.7)
     await mongoClient.connect();
     // Send a ping to confirm a successful connection
