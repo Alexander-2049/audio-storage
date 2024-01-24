@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-import { SECRET_TOKEN } from "..";
+import { SECRET_TOKEN } from "../../server";
 
 export default function verifyToken(
   req: Request,
