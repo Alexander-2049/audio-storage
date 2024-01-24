@@ -11,12 +11,12 @@ dotenv.config({
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
-if (!process.env.DB_URI || !process.env.SECRET_TOKEN)
-  throw new Error("DB_URI and SECRET_TOKEN are required");
-export const { DB_URI, SECRET_TOKEN } = process.env;
+if (!process.env.MONGO_DB_URI || !process.env.SECRET_JWT_TOKEN)
+  throw new Error("MONGO_DB_URI and SECRET_JWT_TOKEN are required");
+export const { MONGO_DB_URI, SECRET_JWT_TOKEN } = process.env;
 
 const start = async () => {
-  const connection = await mongoose.connect(DB_URI);
+  const connection = await mongoose.connect(MONGO_DB_URI);
   if (connection) {
     console.log("Successfully connected to MongoDB!");
   }
