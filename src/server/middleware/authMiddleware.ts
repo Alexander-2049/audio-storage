@@ -15,6 +15,8 @@ export default async function verifyToken(
     res.locals.userId = decoded.userId;
 
     const user = await User.findById(res.locals.userId);
+    if (!user)
+      throw new Error("User not found");
     res.locals.user = user;
 
     next();
