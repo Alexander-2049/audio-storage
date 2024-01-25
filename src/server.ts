@@ -26,7 +26,7 @@ const start = async () => {
 
   app.use((req, res) => nextHandler(req, res));
 
-  nextApp.prepare().then(() => {
+  await nextApp.prepare().then(() => {
     console.log(`API URL http://localhost:${PORT}/api`);
   });
 
