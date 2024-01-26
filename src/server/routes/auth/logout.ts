@@ -4,9 +4,10 @@ const logoutRouter = Router();
 
 logoutRouter.get("/", async (req, res) => {
   try {
-    res.clearCookie("token").status(200).json({ success: true }).end();
+    res.clearCookie("token");
+    return res.redirect("/?logout=true");
   } catch (error) {
-    res.status(500).json({ error: "Something went wrong..." });
+    return res.redirect("/?logout=false");
   }
 });
 
