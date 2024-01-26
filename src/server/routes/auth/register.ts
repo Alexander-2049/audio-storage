@@ -15,7 +15,7 @@ registerRouter.post("/", async (req, res) => {
 
     const user = new User({ username, password: hashedPassword, reg_ip });
     await user.save();
-    return res.redirect("/auth/login?register=true");
+    return res.redirect("/login?register=true");
   } catch (error) {
     if (error instanceof Error) {
       if (error.name === "MongoServerError") {

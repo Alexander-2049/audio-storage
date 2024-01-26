@@ -10,9 +10,9 @@ loginRouter.post("/", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    if (!user) return res.redirect("/auth/login?login=false");
+    if (!user) return res.redirect("/login?login=false");
     const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) return res.redirect("/auth/login?login=false");
+    if (!passwordMatch) return res.redirect("/login?login=false");
     const token = jwt.sign({ userId: user._id }, SECRET_JWT_TOKEN, {
       expiresIn: "1h",
     });
