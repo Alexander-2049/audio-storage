@@ -4,6 +4,7 @@ import dotenv from "dotenv";
 import path from "path";
 import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import cookieParser from "cookie-parser";
 import router from "./server/routes";
 dotenv.config({
   path: path.resolve(__dirname, "../.env"),
@@ -22,6 +23,7 @@ const start = async () => {
   }
 
   app.use(bodyParser.urlencoded({ extended: false }));
+  app.use(cookieParser(SECRET_JWT_TOKEN));
   app.use("/api", router);
 
   app.use((req, res) => nextHandler(req, res));

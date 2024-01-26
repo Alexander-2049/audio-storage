@@ -20,6 +20,11 @@ loginRouter.post("/", async (req, res) => {
     const token = jwt.sign({ userId: user._id }, SECRET_JWT_TOKEN, {
       expiresIn: "1h",
     });
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 900000),
+      httpOnly: true,
+      signed: true,
+    });
     res.status(200).json({ token });
   } catch (error) {
     res.status(500).json({ error: "Login failed" });

@@ -8,7 +8,8 @@ export default async function verifyToken(
   res: Response,
   next: NextFunction
 ) {
-  const token = req.header("authorization");
+  // const token = req.header("authorization");
+  const token = req.signedCookies.token;
   if (!token) return res.status(401).json({ error: "Access denied" });
   try {
     const decoded = jwt.verify(token, SECRET_JWT_TOKEN) as JwtPayload;
