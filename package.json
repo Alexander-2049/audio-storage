@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "nodemon",
     "build:next": "next build",
-    "start": "next start",
+    "build:server": "tsc --project tsconfig.server.json",
+    "build": "npm run build:next && npm run build:server",
+    "start": "cross-env NODE_ENV=production node ./dist/server.js",
     "lint": "next lint"
   },
   "dependencies": {
@@ -26,6 +28,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "autoprefixer": "^10.0.1",
+    "cross-env": "^7.0.3",
     "eslint": "^8",
     "eslint-config-next": "14.1.0",
     "nodemon": "^3.0.3",
