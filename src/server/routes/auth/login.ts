@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import User from "../../models/User";
 import jwt from "jsonwebtoken";
 import { SECRET_JWT_TOKEN } from "../../../server";
+import { Code } from "../../../responseCodes";
 
 const loginRouter = Router();
 
@@ -10,20 +11,29 @@ loginRouter.post("/", async (req, res) => {
   try {
     const { username, password } = req.body;
     const user = await User.findOne({ username });
-    if (!user) return res.redirect("/login?login=false");
+    if (!user)
+      return res.status(400).json({
+        code: Code.LOGIN_FAIL_WRONG_USERNAME,
+        error: true,
+        error_message: "Wrong username",
+      });
     const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) return res.redirect("/login?login=false");
+    if (!passwordMatch)
+      return res.status(400).json({
+        code: Code.LOGIN_FAIL_WRONG_PASSWORD,
+        error: true,
+        error_message: "Wrong password",
+      });
     const token = jwt.sign({ userId: user._id }, SECRET_JWT_TOKEN, {
-      expiresIn: "1h",
+      expiresIn: "48h",
     });
-    res.cookie("token", token, {
-      expires: new Date(Date.now() + 900000),
-      httpOnly: true,
-      signed: true,
-    });
-    return res.redirect("/?login=true");
+    return res.status(200).json({ code: Code.LOGIN_SUCCESS, token: token });
   } catch (error) {
-    return res.redirect("/?login=false");
+    return res.status(401).json({
+      code: Code.LOGIN_FAIL,
+      error: true,
+      error_message: "Authorization failed",
+    });
   }
 });
 

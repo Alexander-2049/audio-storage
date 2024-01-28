@@ -1,39 +1,19 @@
 "use client";
-import API from "@/utils/API";
-import { setCookie } from "@/utils/cookies";
-import { useState } from "react";
-import { useRouter } from "next/navigation";
 
-const Login = () => {
+import { useState } from "react";
+
+interface Props {
+  onSubmit(username: string, password: string): void;
+  errors: string[];
+  isLoading: boolean;
+}
+
+const LoginForm = ({ onSubmit, errors, isLoading }: Props) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  // TODO: Add fields validation
-  const [errors, setErrors] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const router = useRouter();
-
-  async function onSubmit(event: React.MouseEvent<HTMLElement>) {
-    event.preventDefault();
-    setIsLoading(true);
-    try {
-      const url = "/api/auth/login";
-      const response = await API.POST(url, { username, password });
-      const responseData = await response.json();
-      if (responseData.token) {
-        const daysDuration = 45;
-        setCookie("token", responseData.token, daysDuration);
-        router.push("/");
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsLoading(false);
-    }
-  }
 
   return (
-    <div>
+    <>
       <form>
         <label>
           <b>Username</b>
@@ -60,10 +40,13 @@ const Login = () => {
           />
         </label>
         <input
-          disabled={isLoading || errors.length > 0}
+          disabled={isLoading}
           type="submit"
           value="Submit"
-          onClick={onSubmit}
+          onClick={(e) => {
+            e.preventDefault();
+            onSubmit(username, password);
+          }}
         />
       </form>
       {errors.length > 0 ? (
@@ -75,8 +58,8 @@ const Login = () => {
       ) : (
         ""
       )}
-    </div>
+    </>
   );
 };
 
-export default Login;
+export default LoginForm;
