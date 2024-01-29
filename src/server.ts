@@ -7,23 +7,23 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import router from "./server/routes";
 dotenv.config({
-  path: path.resolve(__dirname, "../.env"),
+  path: path.resolve(__dirname, "../.env.local"),
 });
 
 const app = express();
 const PORT = Number(process.env.PORT) || 3000;
-if (!process.env.MONGO_DB_URI || !process.env.SECRET_JWT_TOKEN)
-  throw new Error("MONGO_DB_URI and SECRET_JWT_TOKEN are required");
-export const { MONGO_DB_URI, SECRET_JWT_TOKEN } = process.env;
+if (!process.env.MONGODB_URI || !process.env.SECRET_TOKEN)
+  throw new Error("MONGODB_URI and SECRET_TOKEN are required");
+export const { MONGODB_URI, SECRET_TOKEN } = process.env;
 
 const start = async () => {
-  const connection = await mongoose.connect(MONGO_DB_URI);
+  const connection = await mongoose.connect(MONGODB_URI);
   if (connection) {
     console.log("Successfully connected to MongoDB!");
   }
 
   app.use(bodyParser.urlencoded({ extended: false }));
-  app.use(cookieParser(SECRET_JWT_TOKEN));
+  app.use(cookieParser(SECRET_TOKEN));
   app.use("/api", router);
 
   app.use((req, res) => nextHandler(req, res));

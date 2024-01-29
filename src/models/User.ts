@@ -5,8 +5,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   reg_date: { type: Date, default: Date.now },
   reg_ip: { type: String, required: true },
+  role: { type: String, default: "user" },
 });
 
-const User = mongoose.model("User", userSchema);
-
-export default User;
+export default mongoose.models?.User || mongoose.model("User", userSchema);
