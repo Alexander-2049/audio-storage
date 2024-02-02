@@ -2,6 +2,7 @@
 
 - [ ] Create authentication and authorization middleware for NextJS
 - [ ] Implement file upload on "server" side
+- [ ] Implement Audio Player
 
 ### In Progress
 
