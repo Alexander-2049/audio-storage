@@ -1,6 +1,5 @@
 ### Todo
 
-- [ ] Create authentication and authorization middleware for NextJS
 - [ ] Implement file upload on "server" side
 - [ ] Implement Audio Player
 
@@ -12,3 +11,4 @@
 - [x] Server > Auth > Change redirect to API responses
 - [x] Save/Read cookies throught Next ~~backend~~
 - [x] Do API calls through Next ~~backend~~
+- [x] Create authentication and authorization function ~~middleware~~ for NextJS
