@@ -6,7 +6,8 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Audio-Storage",
-  description: "Your gateway to seamless audio storage, playback, and sharing. Experience a world of music like never before.",
+  description:
+    "Your gateway to seamless audio storage, playback, and sharing. Experience a world of music like never before.",
 };
 
 export default function RootLayout({
@@ -16,7 +17,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body className={["inter.className", "text-white"].join(" ")}>
+        {children}
+      </body>
     </html>
   );
 }
