@@ -76,3 +76,7 @@ export async function signInUser(prevState: any, formData: FormData) {
   const oneDay = 24 * 60 * 60 * 1000;
   cookies().set("token", token, { expires: Date.now() + oneDay * 7 });
 }
+
+export async function logout() {
+  cookies().delete("token");
+}
