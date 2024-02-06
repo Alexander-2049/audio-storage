@@ -2,13 +2,20 @@ import { ReactNode } from "react";
 import PlayerHeader from "./PlayerHeader";
 import PlayerFooter from "./PlayerFooter";
 import PlayerContent from "./PlayerContent";
+import { IUser } from "@/auth/getCurrentUser";
 
-const PlayerContentLayout = ({ children }: { children: ReactNode }) => {
+const PlayerContentLayout = ({
+  children,
+  user,
+}: {
+  children: ReactNode;
+  user: IUser | null;
+}) => {
   return (
     <div className="grid grid-rows-[60px_1fr_60px] h-screen">
-      <PlayerHeader />
-      <PlayerContent>{children}</PlayerContent>
-      <PlayerFooter />
+      <PlayerHeader user={user} />
+      <PlayerContent user={user}>{children}</PlayerContent>
+      <PlayerFooter user={user} />
     </div>
   );
 };

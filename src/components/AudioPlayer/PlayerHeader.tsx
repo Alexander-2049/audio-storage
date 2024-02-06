@@ -3,11 +3,12 @@ import { SearchIcon, MusicIcon } from "./PlayerIcons";
 import { Input } from "@/components/ui/input";
 import { UserDropdownMenu } from "./PlayerUserDropdown";
 import PlayerNavButtons from "./PlayerNavButtons";
+import { IUser } from "@/auth/getCurrentUser";
 
-export default function Header() {
+export default function Header({user}: {user: IUser | null}) {
   return (
     <header className="flex items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
-      <Link className="lg:hidden" href="#">
+      <Link className="lg:hidden" href="/">
         <MusicIcon className="h-6 w-6" />
         <span className="sr-only">Home</span>
       </Link>

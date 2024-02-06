@@ -8,6 +8,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import Image from "next/image";
 import { Button } from "../ui/button";
+import Link from "next/link";
+import { logout } from "@/app/actions";
+
+function LogOut({ children }: { children: React.ReactNode }) {
+  return (
+    <form
+      action={async () => {
+        "use server";
+        await logout();
+      }}
+    >
+      <button type="submit" className="w-full">{children}</button>
+    </form>
+  );
+}
 
 export function UserDropdownMenu() {
   return (
@@ -35,10 +50,14 @@ export function UserDropdownMenu() {
       <DropdownMenuContent align="end">
         <DropdownMenuLabel>My Account</DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Settings</DropdownMenuItem>
+        <Link href="/settings">
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+        </Link>
         <DropdownMenuItem>Support</DropdownMenuItem>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>Logout</DropdownMenuItem>
+        <LogOut>
+          <DropdownMenuItem>Logout</DropdownMenuItem>
+        </LogOut>
       </DropdownMenuContent>
     </DropdownMenu>
   );
