@@ -1,0 +1,53 @@
+/* Custom CSS (styles.css) */
+@keyframes fade-in {
+  from {
+    background-opacity: 0;
+  }
+  to {
+    background-opacity: 30%;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    background-opacity: 30%;
+  }
+  to {
+    background-opacity: 0;
+  }
+}
+
+@keyframes fade-out-reverse {
+  from {
+    background-opacity: 0;
+  }
+  to {
+    background-opacity: 30%;
+  }
+}
+
+@keyframes fade-in-reverse {
+  from {
+    background-opacity: 30%;
+  }
+  to {
+    background-opacity: 0;
+  }
+}
+
+/* Tailwind CSS */
+.animate-fade-in {
+  animation: fade-in 0.3s ease-out forwards;
+}
+
+.animate-fade-out {
+  animation: fade-out 0.3s ease-out forwards;
+}
+
+.animate-fade-out-reverse {
+  animation: fade-out-reverse 0.3s ease-out forwards;
+}
+
+.animate-fade-in-reverse {
+  animation: fade-in-reverse 0.3s ease-out forwards;
+}

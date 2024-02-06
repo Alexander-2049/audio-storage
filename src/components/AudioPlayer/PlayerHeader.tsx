@@ -4,6 +4,8 @@ import { Input } from "@/components/ui/input";
 import { UserDropdownMenu } from "./PlayerUserDropdown";
 import PlayerNavButtons from "./PlayerNavButtons";
 import { IUser } from "@/auth/getCurrentUser";
+import LoginButton from "../auth/LoginButton";
+import SignUpButton from "../auth/SignUpButton";
 
 export default function Header({ user }: { user: IUser | null }) {
   return (
@@ -26,7 +28,18 @@ export default function Header({ user }: { user: IUser | null }) {
             </div>
           </form>
         </div>
-        <UserDropdownMenu user={user} />
+        {user ? (
+          <UserDropdownMenu user={user} />
+        ) : (
+          <ul className="flex gap-2">
+            <li>
+              <LoginButton />
+            </li>
+            <li>
+              <SignUpButton />
+            </li>
+          </ul>
+        )}
       </div>
     </header>
   );

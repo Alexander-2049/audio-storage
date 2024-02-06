@@ -11,7 +11,7 @@ export async function createUser(prevState: any, formData: FormData) {
     const password = formData.get("password");
     if (typeof username !== "string" || typeof password !== "string") {
       return {
-        message: "username and password are required",
+        message: "Username and password are required",
       };
     }
 
@@ -27,20 +27,21 @@ export async function createUser(prevState: any, formData: FormData) {
     await user.save();
 
     return {
-      message: "Signed up successfully",
+      message: "Account has been created",
+      success: true,
     };
   } catch (error) {
     if (error instanceof Error) {
       if (error.name === "MongoServerError") {
         return {
-          message: "username is already taken",
+          message: "Username is already taken",
         };
       }
     }
 
     console.log(error);
     return {
-      message: "something went wrong",
+      message: "Something went wrong",
     };
   }
 }
@@ -50,7 +51,7 @@ export async function signInUser(prevState: any, formData: FormData) {
   const password = formData.get("password");
   if (typeof username !== "string" || typeof password !== "string") {
     return {
-      message: "username and password are required",
+      message: "Username and password are required",
     };
   }
   const user = await User.findOne({ username });
