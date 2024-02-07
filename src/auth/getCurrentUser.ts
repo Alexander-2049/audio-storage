@@ -1,17 +1,6 @@
 import { cookies } from "next/headers";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import User from "@/models/User";
-import { ObjectId } from "mongoose";
-
-export interface IUser {
-  _id: ObjectId;
-  username: string;
-  password: string;
-  reg_ip: string;
-  role: string;
-  reg_date: Date;
-  __v: number;
-}
+import User, { IUser } from "@/models/User";
 
 export default async function getCurrentUser() {
   const token = cookies().get("token");

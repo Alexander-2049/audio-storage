@@ -1,4 +1,4 @@
-import { IUser } from "@/auth/getCurrentUser";
+import { IUser } from "@/models/User";
 import { ReactNode } from "react";
 
 export default function PlayerContent({

@@ -1,4 +1,14 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
+
+export interface IUser {
+  _id: ObjectId;
+  username: string;
+  password: string;
+  reg_ip: string;
+  role: string;
+  reg_date: Date;
+  __v: number;
+}
 
 const userSchema = new mongoose.Schema({
   username: { type: String, unique: true, required: true },

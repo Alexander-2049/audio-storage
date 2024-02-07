@@ -1,4 +1,4 @@
-import { IUser } from "@/auth/getCurrentUser";
+import { IUser } from "@/models/User";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./PlayerIcons";
 

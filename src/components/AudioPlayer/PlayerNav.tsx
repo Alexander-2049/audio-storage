@@ -7,7 +7,7 @@ import {
   SearchIcon,
 } from "./PlayerIcons";
 import { Button } from "../ui/button";
-import { IUser } from "@/auth/getCurrentUser";
+import { IUser } from "@/models/User";
 
 export default function NavigationMenu({user}: {user: IUser | null}) {
   return (

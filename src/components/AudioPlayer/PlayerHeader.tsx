@@ -3,9 +3,9 @@ import { SearchIcon, MusicIcon } from "./PlayerIcons";
 import { Input } from "@/components/ui/input";
 import { UserDropdownMenu } from "./PlayerUserDropdown";
 import PlayerNavButtons from "./PlayerNavButtons";
-import { IUser } from "@/auth/getCurrentUser";
 import LoginButton from "../auth/LoginButton";
 import SignUpButton from "../auth/SignUpButton";
+import { IUser } from "@/models/User";
 
 export default function Header({ user }: { user: IUser | null }) {
   return (

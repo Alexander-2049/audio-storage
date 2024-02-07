@@ -10,7 +10,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { logout } from "@/app/actions";
-import { IUser } from "@/auth/getCurrentUser";
+import { IUser } from "@/models/User";
 
 function LogOut({ children }: { children: React.ReactNode }) {
   return (
