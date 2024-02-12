@@ -1,5 +1,5 @@
 import { Router } from "express";
-import z3Router from "./z3";
+import z3Router from "./z3Router";
 
 const musicRouter = Router();
 
