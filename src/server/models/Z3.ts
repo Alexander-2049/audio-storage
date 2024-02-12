@@ -68,7 +68,7 @@ export class Z3 {
           .querySelector("span.song-download")
           ?.attributes["data-sid"].trim() || "";
 
-      const source_url = await this.fetchDownloadURL(id);
+      // const source_url = await this.fetchDownloadURL(id);
 
       if (mongoose.models.Z3) {
         const songFromDb = await mongoose.models.Z3.find({ id });
@@ -77,7 +77,7 @@ export class Z3 {
             id,
             artist,
             duration,
-            source_url,
+            // source_url,
             song_name,
           });
           await song.save();
@@ -89,7 +89,7 @@ export class Z3 {
         artist,
         duration,
         id,
-        source_url,
+        source_url: null,
       });
     });
 
