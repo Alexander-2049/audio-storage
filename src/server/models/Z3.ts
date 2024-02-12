@@ -4,6 +4,8 @@ import fs, { mkdirSync } from "fs";
 import path from "path";
 import https from "https";
 import { IncomingMessage } from "http";
+import { Document } from "mongoose";
+import { Response } from "express";
 // import Semaphore from "./Semaphore";
 
 interface Song {
@@ -18,7 +20,6 @@ interface Z3_Database_Song extends Document {
   id: string;
   artist: string;
   song_name: string;
-  downloaded: boolean;
   duration: string;
   source_url: string | null;
 }
@@ -29,12 +30,15 @@ const z3Schema = new mongoose.Schema<Z3_Database_Song>({
   duration: { type: String, required: true },
   source_url: { type: String, default: null },
   song_name: { type: String, required: true },
-  downloaded: { type: Boolean, default: false },
 });
 
 export default mongoose.models?.Z3 || mongoose.model("Z3", z3Schema);
 
 export class Z3 {
+  static getDB() {
+    return mongoose.models?.Z3 || mongoose.model("Z3", z3Schema);
+  }
+
   static async search(songName: string, page = "1") {
     const BASE = "ht" + "tps://" + "z" + "3" + ".f" + "m";
     const url =
@@ -70,18 +74,17 @@ export class Z3 {
 
       // const source_url = await this.fetchDownloadURL(id);
 
-      if (mongoose.models.Z3) {
-        const songFromDb = await mongoose.models.Z3.find({ id });
-        if (songFromDb.length < 1) {
-          const song = new mongoose.models.Z3({
-            id,
-            artist,
-            duration,
-            // source_url,
-            song_name,
-          });
-          await song.save();
-        }
+      const SongDB = this.getDB();
+      const songFromDb = await SongDB.find({ id });
+      if (songFromDb.length < 1) {
+        const song = new SongDB({
+          id,
+          artist,
+          duration,
+          // source_url,
+          song_name,
+        });
+        await song.save();
       }
 
       songs.push({
@@ -89,7 +92,7 @@ export class Z3 {
         artist,
         duration,
         id,
-        source_url: null,
+        source_url: "null",
       });
     });
 
@@ -147,38 +150,37 @@ export class Z3 {
     });
   }
 
-  // static async downloadAllSongs() {
-  //   if (!mongoose.models.Z3) return;
+  static async getSongStreamHandler(song_id: string, res: Response) {
+    const SongDB = this.getDB();
+    let fileName: string = song_id + ".mp3";
+    if (fs.existsSync("storage/z3/" + fileName)) {
+      // STREAM SONG
+      res.setHeader("content-type", "audio/mpeg");
+      fs.createReadStream("storage/z3/" + fileName).pipe(res);
+    }
+    const songData: Z3_Database_Song | null = await SongDB.findOne({
+      id: song_id,
+    });
+    if (!songData) return res.status(400).json({ error: "Not found" });
+    if (!songData.source_url) {
+      const downloadUrl = await this.fetchDownloadURL(song_id);
+      if (!downloadUrl)
+        return res.status(500).json({ error: "Stream not found" });
+      SongDB.findOneAndUpdate({ id: song_id }, { source_url: downloadUrl });
+      await this.downloadSong(downloadUrl, song_id + ".mp3");
+    } else {
+      console.log(songData.source_url, song_id + ".mp3");
+      await this.downloadSong(songData.source_url, song_id + ".mp3");
+    }
 
-  //   try {
-  //     // Fetch all documents from the collection
-  //     const allSongs = await mongoose.models.Z3.find({});
-  //     const MAX_CONCURRENT_DOWNLOADS = 10;
-  //     const semaphore = new Semaphore(MAX_CONCURRENT_DOWNLOADS);
-
-  //     // Extract source_url from each document and download the song
-  //     const downloadPromises = allSongs.map(async (songDoc) => {
-  //       if (songDoc.source_url) {
-  //         await semaphore.acquire();
-  //         const fileName = `${songDoc.id}.mp3`;
-  //         try {
-  //           console.log(await this.downloadSong(songDoc.source_url, fileName));
-  //         } catch (error) {
-  //           console.error("Error downloading song:", error);
-  //         } finally {
-  //           semaphore.release();
-  //         }
-  //       }
-  //     });
-
-  //     // Wait for all songs to be queued and downloaded
-  //     await Promise.all(downloadPromises);
-
-  //     console.log("All songs downloaded successfully.");
-  //   } catch (error) {
-  //     console.error("Error downloading songs:", error);
-  //   }
-  // }
+    if (fs.existsSync("storage/z3/" + fileName)) {
+      // STREAM SONG
+      res.setHeader("content-type", "audio/mpeg");
+      fs.createReadStream("storage/z3/" + fileName).pipe(res);
+    } else {
+      return res.status(500).json({ error: "Internal server error" });
+    }
+  }
 
   static async fetchDownloadURL(id: string) {
     const BASE = "ht" + "tps://" + "z" + "3" + ".f" + "m";
