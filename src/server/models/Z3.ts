@@ -6,7 +6,7 @@ import https from "https";
 import { IncomingMessage } from "http";
 import { Document } from "mongoose";
 import { Response } from "express";
-// import Semaphore from "./Semaphore";
+import { Z3DownloadSemaphore } from "../../server";
 
 interface Song {
   song_name: string;
@@ -112,12 +112,15 @@ export class Z3 {
   static async downloadSong(url: string, fileName: string) {
     return new Promise(async (resolve, reject) => {
       try {
+        await Z3DownloadSemaphore.acquire(); // Acquire semaphore
+
         const options = {
           headers: this.getHeaders(), // Assuming this function returns headers
           rejectUnauthorized: false, // Ignore SSL certificate verification
         };
 
         if (fs.existsSync("storage/z3/" + fileName)) {
+          Z3DownloadSemaphore.release(); // Release semaphore if file exists
           return reject("File " + fileName + " already exists");
         }
 
@@ -131,20 +134,24 @@ export class Z3 {
 
           fileStream.on("finish", () => {
             fileStream.close(() => {
+              Z3DownloadSemaphore.release(); // Release semaphore after download is complete
               return resolve(fileName);
             });
           });
 
           fileStream.on("error", (err) => {
             fs.unlink(destination, () => {}); // Delete the file async, don't wait for it to finish
+            Z3DownloadSemaphore.release(); // Release semaphore on error
             return reject(err);
           });
         });
 
         request.on("error", (error) => {
+          Z3DownloadSemaphore.release(); // Release semaphore on error
           return reject(error);
         });
       } catch (error) {
+        Z3DownloadSemaphore.release(); // Release semaphore on error
         return reject(error);
       }
     });
