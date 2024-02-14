@@ -173,7 +173,7 @@ export class Z3 {
       const downloadUrl = await this.fetchDownloadURL(song_id);
       if (!downloadUrl)
         return res.status(500).json({ error: "Stream not found" });
-      SongDB.findOneAndUpdate({ id: song_id }, { source_url: downloadUrl });
+      await SongDB.findOneAndUpdate({ id: song_id }, { source_url: downloadUrl });
       await this.downloadSong(downloadUrl, song_id + ".mp3");
     } else {
       console.log(songData.source_url, song_id + ".mp3");
