@@ -6,7 +6,7 @@ import mongoose from "mongoose";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 import router from "./server/routes";
-import Semaphore from "./server/models/Semaphore";
+import Stack from "./server/models/Stack";
 dotenv.config({
   path: path.resolve(__dirname, "../.env.local"),
 });
@@ -18,7 +18,7 @@ if (!process.env.MONGODB_URI || !process.env.SECRET_TOKEN)
 export const { MONGODB_URI, SECRET_TOKEN } = process.env;
 
 const MAX_SIMULTANEOUS_REQUESTS = 10;
-export const Z3DownloadSemaphore = new Semaphore(MAX_SIMULTANEOUS_REQUESTS);
+export const Z3DownloadStack = new Stack(MAX_SIMULTANEOUS_REQUESTS);
 
 const start = async () => {
   const connection = await mongoose.connect(MONGODB_URI);

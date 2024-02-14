@@ -1,4 +1,4 @@
-export default class Semaphore {
+export default class Stack {
   private maxCount: number;
   private currentCount: number;
   private queue: (() => void)[];

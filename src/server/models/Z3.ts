@@ -6,7 +6,7 @@ import https from "https";
 import { IncomingMessage } from "http";
 import { Document } from "mongoose";
 import { Response } from "express";
-import { Z3DownloadSemaphore } from "../../server";
+import { Z3DownloadStack } from "../../server";
 
 interface Song {
   song_name: string;
@@ -112,7 +112,7 @@ export class Z3 {
   static async downloadSong(url: string, fileName: string) {
     return new Promise(async (resolve, reject) => {
       try {
-        await Z3DownloadSemaphore.acquire(); // Acquire semaphore
+        await Z3DownloadStack.acquire(); // Acquire stack
 
         const options = {
           headers: this.getHeaders(), // Assuming this function returns headers
@@ -120,7 +120,7 @@ export class Z3 {
         };
 
         if (fs.existsSync("storage/z3/" + fileName)) {
-          Z3DownloadSemaphore.release(); // Release semaphore if file exists
+          Z3DownloadStack.release(); // Release stack if file exists
           return reject("File " + fileName + " already exists");
         }
 
@@ -134,24 +134,24 @@ export class Z3 {
 
           fileStream.on("finish", () => {
             fileStream.close(() => {
-              Z3DownloadSemaphore.release(); // Release semaphore after download is complete
+              Z3DownloadStack.release(); // Release stack after download is complete
               return resolve(fileName);
             });
           });
 
           fileStream.on("error", (err) => {
             fs.unlink(destination, () => {}); // Delete the file async, don't wait for it to finish
-            Z3DownloadSemaphore.release(); // Release semaphore on error
+            Z3DownloadStack.release(); // Release stack on error
             return reject(err);
           });
         });
 
         request.on("error", (error) => {
-          Z3DownloadSemaphore.release(); // Release semaphore on error
+          Z3DownloadStack.release(); // Release stack on error
           return reject(error);
         });
       } catch (error) {
-        Z3DownloadSemaphore.release(); // Release semaphore on error
+        Z3DownloadStack.release(); // Release stack on error
         return reject(error);
       }
     });
