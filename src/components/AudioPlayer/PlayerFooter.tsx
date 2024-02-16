@@ -1,4 +1,4 @@
-import { IUser } from "@/models/User";
+import { IUser } from "@/server/database/user/User";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./PlayerIcons";
 

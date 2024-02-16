@@ -5,7 +5,7 @@ import { UserDropdownMenu } from "./PlayerUserDropdown";
 import PlayerNavButtons from "./PlayerNavButtons";
 import LoginButton from "../auth/LoginButton";
 import SignUpButton from "../auth/SignUpButton";
-import { IUser } from "@/models/User";
+import { IUser } from "@/server/database/user/User";
 
 export default function Header({ user }: { user: IUser | null }) {
   return (

@@ -1,5 +1,5 @@
 "use server";
-import User from "@/models/User";
+import User from "@/server/database/user/User";
 import getIp from "@/utils/getIp";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";

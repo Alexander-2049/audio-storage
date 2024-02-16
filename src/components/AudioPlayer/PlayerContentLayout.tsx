@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import PlayerHeader from "./PlayerHeader";
 import PlayerFooter from "./PlayerFooter";
 import PlayerContent from "./PlayerContent";
-import { IUser } from "@/models/User";
+import { IUser } from "@/server/database/user/User";
 
 const PlayerContentLayout = ({
   children,

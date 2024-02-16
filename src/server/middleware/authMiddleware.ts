@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import jwt, { JwtPayload } from "jsonwebtoken";
 import { SECRET_TOKEN } from "../../server";
-import User from "../../models/User";
+import User from "../database/user/User";
 
 export default async function verifyToken(
   req: Request,

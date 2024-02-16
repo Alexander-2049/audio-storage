@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { BellIcon, MusicIcon } from "./PlayerIcons";
 import { Button } from "../ui/button";
-import { IUser } from "@/models/User";
+import { IUser } from "@/server/database/user/User";
 import PlayerNavTopButtons from "./PlayerNavTopButtons";
 
 export default function NavigationMenu({ user }: { user: IUser | null }) {

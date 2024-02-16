@@ -1,4 +1,4 @@
-import { IUser } from "@/models/User";
+import { IUser } from "@/server/database/user/User";
 import { ReactNode } from "react";
 
 export default function PlayerContent({

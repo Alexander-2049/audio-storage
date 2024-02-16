@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import User, { IUser } from "@/models/User";
+import User, { IUser } from "@/server/database/user/User";
 
 export default async function getCurrentUser() {
   const token = cookies().get("token");

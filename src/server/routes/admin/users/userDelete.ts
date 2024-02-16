@@ -1,5 +1,5 @@
 import { Router } from "express";
-import User from "../../../../models/User";
+import User from "../../../database/user/User";
 
 const userDeleteRouter = Router();
 
