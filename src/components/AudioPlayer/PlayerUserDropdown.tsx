@@ -10,7 +10,7 @@ import Image from "next/image";
 import { Button } from "../ui/button";
 import Link from "next/link";
 import { logout } from "@/app/actions";
-import { IUser } from "@/server/database/user/User";
+import { Database_User } from "@/server/database/user/User";
 
 function LogOut({ children }: { children: React.ReactNode }) {
   return (
@@ -25,7 +25,7 @@ function LogOut({ children }: { children: React.ReactNode }) {
   );
 }
 
-export function UserDropdownMenu({user}: {user: IUser | null}) {
+export function UserDropdownMenu({user}: {user: Database_User | null}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>

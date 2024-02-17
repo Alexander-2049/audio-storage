@@ -1,16 +1,14 @@
-import mongoose, { ObjectId } from "mongoose";
+import mongoose, { Document } from "mongoose";
 
-export interface IUser {
-  _id: ObjectId;
+export interface Database_User extends Document {
   username: string;
   password: string;
   reg_ip: string;
   role: string;
   reg_date: Date;
-  __v: number;
 }
 
-const userSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema<Database_User>({
   username: { type: String, unique: true, required: true },
   password: { type: String, required: true },
   reg_date: { type: Date, default: Date.now },

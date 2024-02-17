@@ -1,10 +1,10 @@
 import Link from "next/link";
 import { BellIcon, MusicIcon } from "./PlayerIcons";
 import { Button } from "../ui/button";
-import { IUser } from "@/server/database/user/User";
+import { Database_User } from "@/server/database/user/User";
 import PlayerNavTopButtons from "./PlayerNavTopButtons";
 
-export default function NavigationMenu({ user }: { user: IUser | null }) {
+export default function NavigationMenu({ user }: { user: Database_User | null }) {
   return (
     <nav className="hidden items-start text-sm font-medium lg:grid">
       <div className="h-full border-r bg-gray-100/40 dark:bg-gray-800/40">

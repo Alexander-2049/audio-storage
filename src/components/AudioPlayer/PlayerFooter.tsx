@@ -1,8 +1,8 @@
-import { IUser } from "@/server/database/user/User";
+import { Database_User } from "@/server/database/user/User";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./PlayerIcons";
 
-export default function PlayerFooter({user}: {user: IUser | null}) {
+export default function PlayerFooter({user}: {user: Database_User | null}) {
   return (
     <footer className="flex items-center gap-4 border-t bg-gray-100/40 px-6 dark:bg-gray-800/40">
       <Button className="h-8 w-8" size="icon" variant="outline">

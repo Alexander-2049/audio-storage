@@ -1,6 +1,6 @@
 import { cookies } from "next/headers";
 import jwt, { JwtPayload } from "jsonwebtoken";
-import User, { IUser } from "@/server/database/user/User";
+import User, { Database_User } from "@/server/database/user/User";
 
 export default async function getCurrentUser() {
   const token = cookies().get("token");
@@ -12,7 +12,7 @@ export default async function getCurrentUser() {
   try {
     const verifiedData = jwt.verify(token.value, SECRET_TOKEN) as JwtPayload;
     if (!verifiedData) return null;
-    const user: IUser | null = await User.findById(verifiedData.userId);
+    const user: Database_User | null = await User.findById(verifiedData.userId);
     return user;
   } catch (error) {
     return null;

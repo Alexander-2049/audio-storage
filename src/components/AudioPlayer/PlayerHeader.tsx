@@ -5,9 +5,9 @@ import { UserDropdownMenu } from "./PlayerUserDropdown";
 import PlayerNavButtons from "./PlayerNavButtons";
 import LoginButton from "../auth/LoginButton";
 import SignUpButton from "../auth/SignUpButton";
-import { IUser } from "@/server/database/user/User";
+import { Database_User } from "@/server/database/user/User";
 
-export default function Header({ user }: { user: IUser | null }) {
+export default function Header({ user }: { user: Database_User | null }) {
   return (
     <header className="flex items-center gap-4 border-b bg-gray-100/40 px-6 dark:bg-gray-800/40">
       <Link className="lg:hidden" href="/">
