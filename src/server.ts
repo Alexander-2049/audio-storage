@@ -29,6 +29,9 @@ const start = async () => {
   app.use(bodyParser.urlencoded({ extended: false }));
   app.use(cookieParser(SECRET_TOKEN));
   app.use("/api", router);
+  app.use("/api/*", (req, res) => {
+    return res.status(400).json({ error: "API Route does not exist" });
+  });
 
   app.use((req, res) => nextHandler(req, res));
 
