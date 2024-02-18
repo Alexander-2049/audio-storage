@@ -11,4 +11,5 @@ const Z3Schema = new mongoose.Schema<Database_Z3>({
   storage_song_id: { type: String, required: true, unique: true },
 });
 
-export default mongoose.models?.Z3 || mongoose.model("Z3", Z3Schema);
+const Z3_DB = mongoose.models?.Z3 || mongoose.model("Z3", Z3Schema);
+export default Z3_DB;
