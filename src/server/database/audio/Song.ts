@@ -25,4 +25,5 @@ const songSchema = new mongoose.Schema<Database_Song>({
   storage_song_id: { type: String, required: true },
 });
 
-export default mongoose.models?.Song || mongoose.model("Song", songSchema);
+const Song_DB = mongoose.models?.Song || mongoose.model("Song", songSchema);
+export default Song_DB;
