@@ -2,7 +2,7 @@ import { Router } from "express";
 import adminRouter from "./admin";
 import protectedRouter from "./protected";
 import filesRouter from "./files";
-import musicRouter from "./music/search";
+import musicRouter from "./music";
 
 const router = Router();
 

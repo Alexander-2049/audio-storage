@@ -1,28 +1,24 @@
 import mongoose from "mongoose";
 import { Document } from "mongoose";
 
-interface Database_Song extends Document {
-  song_id: string;
+export interface Database_Song extends Document {
   title: string;
   artist: string;
   file_name: string | null;
-  duration: string | null;
-  chunks: string | null;
-  total_size: string | null;
-  storage_name: string;
-  storage_song_id: string;
+  duration: number | null;
+  chunks: number | null;
+  file_size: number | null;
+  song_id: string;
 }
 
 const songSchema = new mongoose.Schema<Database_Song>({
-  song_id: { type: String, unique: true, required: true },
   title: { type: String, required: true },
   artist: { type: String, required: true },
   file_name: { type: String, default: null },
-  duration: { type: String, default: null },
-  chunks: { type: String, default: null },
-  total_size: { type: String, default: null },
-  storage_name: { type: String, required: true },
-  storage_song_id: { type: String, required: true },
+  duration: { type: Number, default: null },
+  chunks: { type: Number, default: null },
+  file_size: { type: Number, default: null },
+  song_id: { type: String, required: true },
 });
 
 const Song_DB = mongoose.models?.Song || mongoose.model("Song", songSchema);
