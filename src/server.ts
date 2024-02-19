@@ -1,4 +1,5 @@
 import express from "express";
+import cors from "cors"; // Import the cors middleware
 import { nextApp, nextHandler } from "./next-utils";
 import dotenv from "dotenv";
 import path from "path";
@@ -20,10 +21,17 @@ export const { MONGODB_URI, SECRET_TOKEN } = process.env;
 const MAX_SIMULTANEOUS_REQUESTS = 10;
 export const Z3DownloadStack = new Stack(MAX_SIMULTANEOUS_REQUESTS);
 
+const isDev = process.env.NODE_ENV !== "production"; // Check if it's development mode
+
 const start = async () => {
   const connection = await mongoose.connect(MONGODB_URI);
   if (connection) {
     console.log("Successfully connected to MongoDB!");
+  }
+
+  // Apply CORS middleware only if it's not production mode
+  if (isDev) {
+    app.use(cors());
   }
 
   app.use(bodyParser.urlencoded({ extended: false }));
