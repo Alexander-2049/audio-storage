@@ -1,5 +1,8 @@
 import { HTMLElement, parse } from "node-html-parser";
 import Song_DB, { Database_Song } from "../database/audio/Song";
+import { IncomingMessage } from "http";
+import https from "https";
+import storage from "./FileStorage";
 
 interface Song {
   _id: string | null;
@@ -102,6 +105,43 @@ export default class Z3 {
     } catch (error) {
       return null;
     }
+  }
+
+  static async downloadSong(
+    url: string,
+    fileName: string
+  ): Promise<{ file_name: string; file_size: number }> {
+    return new Promise((resolve, reject) => {
+      const options = {
+        headers: getHeaders(), // Assuming this function returns headers
+        rejectUnauthorized: false, // Ignore SSL certificate verification
+      };
+
+      const request = https.get(url, options, (response: IncomingMessage) => {
+        try {
+          if (response.statusCode !== 200) {
+            throw new Error(`Failed to download: ${response.statusCode}`);
+          }
+          const file_size = Number(
+            response.headers["content-length"] || "-1"
+          ).valueOf();
+          storage
+            .writeFileFromStream(fileName, response)
+            .then(() => {
+              resolve({ file_name: fileName, file_size });
+            })
+            .catch((error) => {
+              reject(error);
+            });
+        } catch (error) {
+          reject(error);
+        }
+      });
+
+      request.on("error", (error) => {
+        reject(error);
+      });
+    });
   }
 }
 
