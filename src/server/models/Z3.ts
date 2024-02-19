@@ -56,7 +56,7 @@ export default class Z3 {
   public static async findSongInDB(song_id: string) {
     try {
       const song: Database_Song | null = await Song_DB.findOne({
-        song_id: "z3_" + song_id,
+        song_id,
       });
       return song;
     } catch (error) {
