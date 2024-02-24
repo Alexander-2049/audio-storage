@@ -93,6 +93,30 @@ class FileStorage {
     });
   }
 
+  async readFileChunk(
+    fileName: string,
+    start: number,
+    end: number
+  ): Promise<Buffer> {
+    return new Promise((resolve, reject) => {
+      const filePath = `storage/${fileName}`;
+      const readStream = fs.createReadStream(filePath, { start, end });
+      const chunks: Buffer[] = [];
+
+      readStream.on("data", (chunk: Buffer) => {
+        chunks.push(chunk);
+      });
+
+      readStream.on("end", () => {
+        resolve(Buffer.concat(chunks));
+      });
+
+      readStream.on("error", (error: Error) => {
+        reject(error);
+      });
+    });
+  }
+
   existsSync(fileName: string) {
     const filePath = `storage/${fileName}`;
     if (this.downloading.has(fileName) || fs.existsSync(filePath)) {
