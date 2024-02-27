@@ -11,13 +11,12 @@ const chunkSize = 100000;
 
 let audioContext: AudioContext | null = null;
 
+// Preventing NextJS Server-Side Errors
 if (
   typeof window !== "undefined" &&
   typeof window.AudioContext !== "undefined"
 ) {
   audioContext = new window.AudioContext();
-} else {
-  console.error("AudioContext is not supported in this environment");
 }
 
 export default function PlayerFooter() {
@@ -60,7 +59,8 @@ export default function PlayerFooter() {
 
       try {
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-        if (!isChunkPlaying) { // Check if no chunk is currently playing
+        if (!isChunkPlaying) {
+          // Check if no chunk is currently playing
           setIsChunkPlaying(true); // Set flag to indicate a chunk is being played
           await playChunk(audioBuffer); // Play the chunk immediately after it's downloaded
         }
