@@ -6,7 +6,6 @@ export interface Database_Song extends Document {
   artist: string;
   file_name: string | null;
   duration: number | null;
-  chunks: number | null;
   file_size: number | null;
   song_id: string;
 }
@@ -16,7 +15,6 @@ const songSchema = new mongoose.Schema<Database_Song>({
   artist: { type: String, required: true },
   file_name: { type: String, default: null },
   duration: { type: Number, default: null },
-  chunks: { type: Number, default: null },
   file_size: { type: Number, default: null },
   song_id: { type: String, required: true },
 });
