@@ -1,16 +1,38 @@
+interface SongInterface {
+  song_id: string;
+  file_size: number;
+  title: string;
+  artist: string;
+  duration: number;
+}
+
 export class AudioPlayer {
   private playlist: Song[];
+  private shuffled_playlist: Song[];
   private context: AudioContext;
   private analyzer: AnalyserNode;
 
   constructor() {
     this.playlist = [];
+    this.shuffled_playlist = [];
     this.context = new AudioContext();
     this.analyzer = this.context.createAnalyser();
     this.analyzer.fftSize = 2048;
   }
 
-  private async requestChunk(id: number, startByte: number, endByte: number) {
+  static async requestSongInfo(id: string) {
+    const response = await fetch("/api/music/info", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      body: new URLSearchParams({ id: id.toString() }),
+    });
+    const decoded: SongInterface = await response.json();
+    return decoded;
+  }
+
+  static async requestChunk(id: number, startByte: number, endByte: number) {
     const response = await fetch("/api/music/chunks", {
       method: "POST",
       headers: {
@@ -23,15 +45,27 @@ export class AudioPlayer {
     const arrayBuffer = await response.arrayBuffer();
     return arrayBuffer;
   }
+
+  public play(songId: string | null = null) {}
+
+  public pause() {}
+
+  public moveTo(time: number) {}
+
+  public getContext() {
+    return this.context;
+  }
 }
 
 export class Song {
   private isPlaying: boolean;
   private chunks: Chunk[];
+  private song_data: SongInterface;
 
-  constructor() {
+  constructor(song_data: SongInterface) {
     this.isPlaying = false;
     this.chunks = [];
+    this.song_data = song_data;
   }
 
   private appendBuffer(buffer1: ArrayBuffer, buffer2: ArrayBuffer) {
