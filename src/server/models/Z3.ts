@@ -31,7 +31,6 @@ export default class Z3 {
         if (!songFromSongDB) {
           const saved: Database_Song | null = await this.saveSongToDB({
             artist,
-            chunks: null,
             duration,
             file_size: null,
             song_id,
@@ -82,14 +81,12 @@ export default class Z3 {
     title,
     artist,
     duration,
-    chunks,
     file_size,
     song_id,
   }: {
     title: string;
     artist: string;
     duration: number;
-    chunks: number | null;
     file_size: number | null;
     song_id: string;
   }) {
@@ -98,7 +95,6 @@ export default class Z3 {
         title,
         artist,
         duration,
-        chunks,
         file_size,
         song_id: "z3_" + song_id,
       }).save();
