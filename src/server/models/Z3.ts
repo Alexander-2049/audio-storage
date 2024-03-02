@@ -188,7 +188,7 @@ function parseSearchPage(html: string) {
       _id: null,
       song_name: querySelector(e, "div.song-name"),
       artist: querySelector(e, "div.song-artist"),
-      duration: timeStringToMilliseconds(querySelector(e, "span.song-time")),
+      duration: timeStringToSeconds(querySelector(e, "span.song-time")),
       song_id:
         e.querySelector("span.song-download")?.attributes["data-sid"].trim() ||
         "",
@@ -202,7 +202,7 @@ function querySelector(e: HTMLElement, selector: string) {
   return e.querySelector(selector)?.innerText.trim() || "";
 }
 
-function timeStringToMilliseconds(time: string): number {
+function timeStringToSeconds(time: string): number {
   const [minutes, seconds] = time.split(":").map(Number);
-  return (minutes * 60 + seconds) * 1000;
+  return minutes * 60 + seconds;
 }
