@@ -125,8 +125,29 @@ export class AudioPlayer {
 
   public moveTo(time: number) {
     if (this.source) {
-      this.source.stop(0);
-      this.source.start(0, time);
+      if (this.isPlaying) {
+        // If currently playing, stop the source node
+        this.source.stop();
+      }
+
+      // Create a new source node
+      const newSource = this.context.createBufferSource();
+      if (!this.source.buffer) {
+        throw new Error("Buffer is null");
+      }
+      newSource.buffer = this.source.buffer; // Set the buffer to the current buffer
+      newSource.connect(this.context.destination);
+
+      // Calculate the time offset within the audio buffer
+      const offset = time % newSource.buffer.duration;
+
+      // Start playing from the specified time offset
+      newSource.start(0, offset);
+
+      // Update the source reference
+      this.source = newSource;
+
+      this.isPlaying = true;
     }
   }
 
