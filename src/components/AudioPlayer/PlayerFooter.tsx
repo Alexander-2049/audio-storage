@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./PlayerIcons";
 import { PauseIcon } from "@radix-ui/react-icons";
@@ -12,10 +12,13 @@ export default function PlayerFooter() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
+  const audioRef = useRef<null | HTMLAudioElement>(null);
 
   useEffect(() => {
     const audioPlayer = new AudioPlayer();
     setPlayer(audioPlayer);
+    navigator.mediaSession.playbackState = "none";
+
     return () => {
       audioPlayer.pause(); // Pause playback when unmounting
     };
@@ -60,20 +63,67 @@ export default function PlayerFooter() {
     }
   }, [player]);
 
-  async function togglePlay() {
+  const togglePlay = useCallback(async () => {
     if (!songData || !player) return;
 
     try {
       if (!isPlaying) {
         await player.play(songData.song_id);
+        navigator.mediaSession.playbackState = "playing";
       } else {
+        navigator.mediaSession.playbackState = "paused";
         player.pause();
       }
       setIsPlaying((prev) => !prev);
     } catch (error) {
       console.error("Error playing:", error);
     }
-  }
+  }, [songData, player, isPlaying]);
+
+  useEffect(() => {
+    if (audioRef.current === null) return;
+    const element = audioRef.current;
+    element.play();
+    // navigator.mediaSession.setActionHandler("play", togglePlay);
+    // navigator.mediaSession.setActionHandler("pause", togglePlay);
+  }, [audioRef, togglePlay]);
+
+  useEffect(() => {
+    function play() {
+      togglePlay();
+    }
+    function pause() {
+      togglePlay();
+    }
+    function handleMediaKey() {
+      togglePlay();
+    }
+
+    navigator.mediaSession.setActionHandler("play", play);
+    navigator.mediaSession.setActionHandler("pause", pause);
+    navigator.mediaSession.metadata = new window.MediaMetadata({
+      title: "Unforgettable",
+      artist: "Nat King Cole",
+      album: "The Ultimate Collection (Remastered)",
+      artwork: [
+        {
+          src: "https://dummyimage.com/512x512",
+          sizes: "512x512",
+          type: "image/png",
+        },
+      ],
+    });
+    navigator.mediaSession.setActionHandler("play", handleMediaKey);
+    navigator.mediaSession.setActionHandler("pause", handleMediaKey);
+    navigator.mediaSession.setActionHandler("stop", handleMediaKey);
+    navigator.mediaSession.setActionHandler("nexttrack", handleMediaKey);
+    navigator.mediaSession.setActionHandler("previoustrack", handleMediaKey);
+
+    // return () => {
+    // document.removeEventListener("play", play);
+    // document.removeEventListener("pause", pause);
+    // };
+  }, [togglePlay]);
 
   if (!player || loading)
     return (
@@ -133,6 +183,7 @@ export default function PlayerFooter() {
       <span>
         {currentTime.toFixed(0)} / {songData?.duration}
       </span>
+      <audio controls={false} loop={true} src={"silence.mp3"} ref={audioRef} />
     </footer>
   );
 }
