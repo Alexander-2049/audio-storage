@@ -129,6 +129,7 @@ export class AudioPlayer {
         // If currently playing, stop the source node
         this.source.stop();
       }
+      this.source.disconnect();
 
       // Create a new source node
       const newSource = this.context.createBufferSource();
