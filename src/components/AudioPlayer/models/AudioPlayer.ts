@@ -13,11 +13,14 @@ export class AudioPlayer {
   private analyzer: AnalyserNode;
   private source: AudioBufferSourceNode | null;
   private isPlaying: boolean;
+  private gainNode: GainNode;
 
   constructor() {
     this.playlist = [];
     this.shuffled_playlist = [];
     this.context = new AudioContext();
+    this.gainNode = this.context.createGain();
+    this.gainNode.connect(this.context.destination);
     this.analyzer = this.context.createAnalyser();
     this.analyzer.fftSize = 2048;
     this.source = null;
@@ -77,6 +80,7 @@ export class AudioPlayer {
       }
       this.source = this.context.createBufferSource();
       this.source.buffer = audio_buffer;
+      this.source.connect(this.gainNode);
       this.source.connect(this.context.destination);
 
       if (this.isPlaying) {
@@ -138,6 +142,7 @@ export class AudioPlayer {
       }
       newSource.buffer = this.source.buffer; // Set the buffer to the current buffer
       newSource.connect(this.context.destination);
+      newSource.connect(this.gainNode);
 
       // Calculate the time offset within the audio buffer
       const offset = time % newSource.buffer.duration;
@@ -170,6 +175,10 @@ export class AudioPlayer {
       return this.context.currentTime;
     }
     return 0;
+  }
+
+  public setVolume(volume: number) {
+    this.gainNode.gain.setValueAtTime(volume, this.context.currentTime);
   }
 }
 
