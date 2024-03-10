@@ -31,7 +31,6 @@ export default class Z3 {
         if (!songFromSongDB) {
           const saved: Database_Song | null = await this.saveSongToDB({
             artist,
-            chunks: null,
             duration,
             file_size: null,
             song_id,
@@ -82,14 +81,12 @@ export default class Z3 {
     title,
     artist,
     duration,
-    chunks,
     file_size,
     song_id,
   }: {
     title: string;
     artist: string;
     duration: number;
-    chunks: number | null;
     file_size: number | null;
     song_id: string;
   }) {
@@ -98,7 +95,6 @@ export default class Z3 {
         title,
         artist,
         duration,
-        chunks,
         file_size,
         song_id: "z3_" + song_id,
       }).save();
@@ -192,7 +188,7 @@ function parseSearchPage(html: string) {
       _id: null,
       song_name: querySelector(e, "div.song-name"),
       artist: querySelector(e, "div.song-artist"),
-      duration: timeStringToMilliseconds(querySelector(e, "span.song-time")),
+      duration: timeStringToSeconds(querySelector(e, "span.song-time")),
       song_id:
         e.querySelector("span.song-download")?.attributes["data-sid"].trim() ||
         "",
@@ -206,7 +202,7 @@ function querySelector(e: HTMLElement, selector: string) {
   return e.querySelector(selector)?.innerText.trim() || "";
 }
 
-function timeStringToMilliseconds(time: string): number {
+function timeStringToSeconds(time: string): number {
   const [minutes, seconds] = time.split(":").map(Number);
-  return (minutes * 60 + seconds) * 1000;
+  return minutes * 60 + seconds;
 }
