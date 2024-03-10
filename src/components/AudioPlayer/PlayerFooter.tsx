@@ -12,6 +12,7 @@ export default function PlayerFooter() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
+  const [volume, setVolume] = useState(0.5);
   const audioRef = useRef<null | HTMLAudioElement>(null);
 
   useEffect(() => {
@@ -41,7 +42,7 @@ export default function PlayerFooter() {
   useEffect(() => {
     async function fetchSongData() {
       try {
-        const songInfo = await AudioPlayer.requestSongInfo("z3_40466454");
+        const songInfo = await AudioPlayer.requestSongInfo("z3_29392327");
         if (songInfo) {
           setSongData(songInfo);
           if (player) {
@@ -101,10 +102,10 @@ export default function PlayerFooter() {
 
     navigator.mediaSession.setActionHandler("play", play);
     navigator.mediaSession.setActionHandler("pause", pause);
+    if(!songData) return;
     navigator.mediaSession.metadata = new window.MediaMetadata({
-      title: "Unforgettable",
-      artist: "Nat King Cole",
-      album: "The Ultimate Collection (Remastered)",
+      title: songData.title,
+      artist: songData.artist,
       artwork: [
         {
           src: "https://dummyimage.com/512x512",
@@ -123,7 +124,7 @@ export default function PlayerFooter() {
     // document.removeEventListener("play", play);
     // document.removeEventListener("pause", pause);
     // };
-  }, [togglePlay]);
+  }, [togglePlay, songData]);
 
   if (!player || loading)
     return (
@@ -184,6 +185,11 @@ export default function PlayerFooter() {
         {currentTime.toFixed(0)} / {songData?.duration}
       </span>
       <audio controls={false} loop={true} src={"silence.mp3"} ref={audioRef} />
+      <input type="range" step="0.01" min="-1" max="1" value={volume} onChange={(e) => {
+        const updated_volume = Number(e.target.value).valueOf();
+        setVolume(updated_volume);
+        player.setVolume(updated_volume);
+      }}/>
     </footer>
   );
 }
