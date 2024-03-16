@@ -1,9 +1,10 @@
 "use client";
-import { useState, useEffect, useCallback, useRef } from "react";
+import { useState, useEffect, useCallback, useRef, useContext } from "react";
 import { Button } from "../ui/button";
 import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./PlayerIcons";
 import { PauseIcon } from "@radix-ui/react-icons";
 import { AudioPlayer, SongInterface } from "./models/AudioPlayer";
+import { PlayerContext } from "./context/playerContext";
 
 export default function PlayerFooter() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -14,6 +15,7 @@ export default function PlayerFooter() {
   const [currentTime, setCurrentTime] = useState(0);
   const [volume, setVolume] = useState(0.5);
   const audioRef = useRef<null | HTMLAudioElement>(null);
+  const { song_id } = useContext(PlayerContext);
 
   useEffect(() => {
     const audioPlayer = new AudioPlayer();
@@ -102,7 +104,7 @@ export default function PlayerFooter() {
 
     navigator.mediaSession.setActionHandler("play", play);
     navigator.mediaSession.setActionHandler("pause", pause);
-    if(!songData) return;
+    if (!songData) return;
     navigator.mediaSession.metadata = new window.MediaMetadata({
       title: songData.title,
       artist: songData.artist,
@@ -185,11 +187,18 @@ export default function PlayerFooter() {
         {currentTime.toFixed(0)} / {songData?.duration}
       </span>
       <audio controls={false} loop={true} src={"silence.mp3"} ref={audioRef} />
-      <input type="range" step="0.01" min="-1" max="1" value={volume} onChange={(e) => {
-        const updated_volume = Number(e.target.value).valueOf();
-        setVolume(updated_volume);
-        player.setVolume(updated_volume);
-      }}/>
+      <input
+        type="range"
+        step="0.01"
+        min="-1"
+        max="1"
+        value={volume}
+        onChange={(e) => {
+          const updated_volume = Number(e.target.value).valueOf();
+          setVolume(updated_volume);
+          player.setVolume(updated_volume);
+        }}
+      />
     </footer>
   );
 }
