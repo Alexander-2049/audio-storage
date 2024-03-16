@@ -1,11 +1,11 @@
 import Link from "next/link";
 import { SearchIcon, MusicIcon } from "./PlayerIcons";
-import { Input } from "@/components/ui/input";
 import { UserDropdownMenu } from "./PlayerUserDropdown";
 import PlayerNavButtons from "./PlayerNavButtons";
 import LoginButton from "../auth/LoginButton";
 import SignUpButton from "../auth/SignUpButton";
 import { Database_User } from "@/server/database/user/User";
+import PlayerSearch from "./PlayerSearch";
 
 export default function Header({ user }: { user: Database_User | null }) {
   return (
@@ -17,14 +17,10 @@ export default function Header({ user }: { user: Database_User | null }) {
       <div className="w-full flex-1 flex flex-row items-center justify-between">
         <div className="flex flex-row gap-4">
           <PlayerNavButtons />
-          <form className="min-w-fit">
+          <form className="min-w-fit w-96">
             <div className="relative">
               <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500 dark:text-gray-400" />
-              <Input
-                className="bg-white shadow-none appearance-none pl-8 dark:bg-gray-950"
-                placeholder="Search songs, albums, artists..."
-                type="search"
-              />
+              <PlayerSearch />
             </div>
           </form>
         </div>
