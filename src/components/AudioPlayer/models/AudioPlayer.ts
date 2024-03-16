@@ -178,6 +178,11 @@ export class AudioPlayer {
   }
 
   public setVolume(volume: number) {
+    if (volume < 0) volume = -1;
+    else if (volume > 1) volume = 1;
+    else {
+      volume -= 1;
+    }
     this.gainNode.gain.setValueAtTime(volume, this.context.currentTime);
   }
 }

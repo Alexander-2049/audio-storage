@@ -190,7 +190,7 @@ export default function PlayerFooter() {
       <input
         type="range"
         step="0.01"
-        min="-1"
+        min="0"
         max="1"
         value={volume}
         onChange={(e) => {
