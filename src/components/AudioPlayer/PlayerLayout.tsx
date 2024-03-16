@@ -14,7 +14,7 @@ const PlayerContentLayout = ({
   return (
     <div className="grid grid-rows-[60px_1fr_60px] h-screen">
       <PlayerHeader user={user} />
-      <PlayerContent user={user}>{children}</PlayerContent>
+      <PlayerContent>{children}</PlayerContent>
       <PlayerFooter />
     </div>
   );
