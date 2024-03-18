@@ -87,6 +87,7 @@ export default function PlayerFooter() {
     if (audioRef.current === null) return;
     const element = audioRef.current;
     element.play();
+    element.volume = 0;
     // navigator.mediaSession.setActionHandler("play", togglePlay);
     // navigator.mediaSession.setActionHandler("pause", togglePlay);
   }, [audioRef, togglePlay]);
