@@ -22,8 +22,6 @@ const PlayerSearch = () => {
     ) {
       setValue(searchParams.get("q") || "");
       setIsSearchPageOpen(true);
-    } else if (pathname === "/search" && !isSearchPageOpen) {
-      setIsSearchPageOpen(true);
       if (inputRef.current) {
         inputRef.current.focus();
       }
