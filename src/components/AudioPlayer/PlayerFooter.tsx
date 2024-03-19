@@ -5,6 +5,7 @@ import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./PlayerIcons";
 import { PauseIcon } from "@radix-ui/react-icons";
 import { AudioPlayer, SongInterface } from "./models/AudioPlayer";
 import { PlayerContext } from "./context/playerContext";
+import useLocalStorage from "@/hooks/useLocalStorage";
 
 export default function PlayerFooter() {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -13,7 +14,7 @@ export default function PlayerFooter() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [currentTime, setCurrentTime] = useState(0);
-  const [volume, setVolume] = useState(0.5);
+  const [volume, setVolume] = useLocalStorage("player-volume", "0.5");
   const audioRef = useRef<null | HTMLAudioElement>(null);
   const { song_id } = useContext(PlayerContext);
 
@@ -26,6 +27,10 @@ export default function PlayerFooter() {
       audioPlayer.pause(); // Pause playback when unmounting
     };
   }, []);
+
+  useEffect(() => {
+    if (player) player.setVolume(volume);
+  }, [player, volume]);
 
   useEffect(() => {
     let interval = setTimeout(() => {});
@@ -197,7 +202,6 @@ export default function PlayerFooter() {
         onChange={(e) => {
           const updated_volume = Number(e.target.value).valueOf();
           setVolume(updated_volume);
-          player.setVolume(updated_volume);
         }}
       />
     </footer>

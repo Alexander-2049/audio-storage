@@ -177,7 +177,11 @@ export class AudioPlayer {
     return 0;
   }
 
-  public setVolume(volume: number) {
+  public setVolume(volume: number | string) {
+    if (typeof volume === "string") {
+      volume = Number(volume).valueOf() | 0.1;
+    }
+
     if (volume < 0) volume = -1;
     else if (volume > 1) volume = 1;
     else {
