@@ -1,5 +1,6 @@
 "use client";
 import API from "@/utils/API";
+import { decodeHTMLEntities } from "@/utils/decodeHTMLEntities";
 import {
   QueryFunctionContext,
   useQuery,
@@ -49,7 +50,11 @@ const SearchPage = () => {
       <ul>
         {Array.isArray(query.data) &&
           query.data.map((song) => {
-            return <li key={`search_${song.song_id}`}>{song.song_name}</li>;
+            return (
+              <li key={`search_${song.song_id}`}>
+                {decodeHTMLEntities(song.song_name)}
+              </li>
+            );
           })}
       </ul>
     </div>
