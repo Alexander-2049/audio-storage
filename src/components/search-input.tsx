@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { Input } from "../ui/input";
+import { Input } from "./ui/input";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 const SEARCH_INPUT_THROTTLE = 500;
 
-const PlayerSearch = () => {
+const InputSearch = () => {
   const router = useRouter();
   const [value, setValue] = useState("");
   const pathname = usePathname();
@@ -64,4 +64,4 @@ const PlayerSearch = () => {
   );
 };
 
-export default PlayerSearch;
+export default InputSearch;

@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 
-import PlayerNav from "@/components/AudioPlayer/PlayerNav";
+import PlayerNav from "@/components/navigation";
 import { ReactNode } from "react";
-import PlayerLayout from "@/components/AudioPlayer/PlayerLayout";
+import PlayerLayout from "@/components/layout";
 import getCurrentUser from "@/auth/getCurrentUser";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -21,7 +21,7 @@ const PlayerPageLayout = async ({ children }: { children: ReactNode }) => {
     <html lang="en">
       <body className={inter.className}>
         <div className="grid min-h-screen w-full grid-cols-[1fr] lg:grid-cols-[240px_1fr]">
-          <PlayerNav user={user}/>
+          <PlayerNav user={user} />
           <PlayerLayout user={user}>{children}</PlayerLayout>
         </div>
       </body>

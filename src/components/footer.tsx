@@ -1,13 +1,13 @@
 "use client";
 import { useState, useEffect, useCallback, useRef, useContext } from "react";
-import { Button } from "../ui/button";
-import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./PlayerIcons";
+import { Button } from "./ui/button";
+import { ArrowLeftIcon, ArrowRightIcon, PlayIcon } from "./icons";
 import { PauseIcon } from "@radix-ui/react-icons";
 import { AudioPlayer, SongInterface } from "./models/AudioPlayer";
 import { PlayerContext } from "./context/playerContext";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
-export default function PlayerFooter() {
+export default function Footer() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [player, setPlayer] = useState<AudioPlayer | null>(null);
   const [songData, setSongData] = useState<SongInterface | null>(null);

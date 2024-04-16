@@ -1,11 +1,11 @@
 import { ReactNode } from "react";
-import PlayerHeader from "./PlayerHeader";
-import PlayerFooter from "./PlayerFooter";
-import PlayerContent from "./PlayerContent";
+import PlayerHeader from "./header";
+import PlayerFooter from "./footer";
+import PlayerContent from "./content";
 import { Database_User } from "@/server/database/user/User";
 import { PlayerContextProvider } from "./context/playerContext";
 
-const PlayerContentLayout = ({
+const ContentLayout = ({
   children,
   user,
 }: {
@@ -23,4 +23,4 @@ const PlayerContentLayout = ({
   );
 };
 
-export default PlayerContentLayout;
+export default ContentLayout;
