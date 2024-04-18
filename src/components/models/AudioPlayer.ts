@@ -192,13 +192,11 @@ export class AudioPlayer {
 }
 
 export class Song {
-  private isPlaying: boolean;
   private chunks: Chunk[];
   private audio_buffer?: AudioBuffer;
   private song_data: SongInterface;
 
   constructor(song_data: SongInterface) {
-    this.isPlaying = false;
     this.chunks = [];
     this.song_data = song_data;
   }
